@@ -1,4 +1,4 @@
-package com.oreki.redis.util;
+package cn.autumnclouds.redis.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

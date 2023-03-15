@@ -1,2 +1,2 @@
 # starter
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.oreki.redis.RedisClientConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.autumnclouds.redis.RedisClientConfig

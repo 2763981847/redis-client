@@ -1,4 +1,4 @@
-package com.oreki.redis;
+package cn.autumnclouds.redis;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan
-@ConfigurationProperties("oreki.redis")
+@ConfigurationProperties("autumnclouds.redis")
 @Data
 public class RedisClientConfig {
 }

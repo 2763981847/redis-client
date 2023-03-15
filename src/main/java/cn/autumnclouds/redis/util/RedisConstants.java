@@ -1,7 +1,7 @@
-package com.oreki.redis.util;
+package cn.autumnclouds.redis.util;
 
 /**
- * @author Oreki
+ * @author autumnclouds
  */
 public class RedisConstants {
     public static final Long CACHE_NULL_TTL = 2L;
