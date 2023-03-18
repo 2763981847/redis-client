@@ -14,4 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("autumnclouds.redis")
 @Data
 public class RedisClientConfig {
+    public  Long cache_ull_ttl = 2L;
+    public String lock_key = "lock:";
+    public  Long lock_ttl = 10L;
 }
