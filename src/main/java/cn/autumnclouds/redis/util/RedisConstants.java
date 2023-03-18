@@ -1,10 +1,12 @@
 package cn.autumnclouds.redis.util;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 
 /**
  * @author autumnclouds
  */
+@Component
 public class RedisConstants {
     public static Long CACHE_NULL_TTL = 2L;
     public static String LOCK_KEY = "lock:";
