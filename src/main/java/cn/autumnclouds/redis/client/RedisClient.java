@@ -3,6 +3,9 @@ package cn.autumnclouds.redis.client;
 
 import cn.autumnclouds.redis.util.RedisConstants;
 import cn.autumnclouds.redis.util.RedisData;
+import cn.hutool.Hutool;
+import cn.hutool.core.convert.CastUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -116,7 +119,7 @@ public class RedisClient {
         }
         //缓存命中则判断缓存是否已过期
         RedisData redisData = JSONUtil.toBean(jsonString, RedisData.class);
-        T data = JSONUtil.toBean((JSONObject) redisData.getData(), type);
+        T data = Convert.convert(type, redisData.getData());
         if (LocalDateTime.now().isBefore(redisData.getExpireTime())) {
             //未过期则刷新缓存并返回
             this.setWithLogicExpire(key, data, expireTime, timeUnit);
