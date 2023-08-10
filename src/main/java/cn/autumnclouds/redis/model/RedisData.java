@@ -1,4 +1,4 @@
-package cn.autumnclouds.redis.util;
+package cn.autumnclouds.redis.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,19 +1,15 @@
 package cn.autumnclouds.redis.client;
 
 
-import cn.autumnclouds.redis.util.RedisConstants;
-import cn.autumnclouds.redis.util.RedisData;
-import cn.hutool.Hutool;
-import cn.hutool.core.convert.CastUtil;
+import cn.autumnclouds.redis.properties.RedisClientProperties;
+import cn.autumnclouds.redis.model.RedisData;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,10 +21,13 @@ import java.util.function.Supplier;
  * @author Fu Qiujie
  * @since 2023/3/11
  */
-@Component
+@AllArgsConstructor
 public class RedisClient {
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
+
+    private final RedisClientProperties redisClientProperties;
+
+
     private static final ExecutorService CACHE_REBUILD_EXECUTOR
             = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MINUTES,
             new LinkedBlockingQueue<>(), runnable -> new Thread(runnable, "缓存重建线程"));
@@ -79,7 +78,7 @@ public class RedisClient {
             //刷新过期时间
             stringRedisTemplate.expire(key, expireTime, timeUnit);
             //判断是否为空对象
-            if ("".equals(jsonString)) {
+            if (jsonString.isEmpty()) {
                 //是空对象则返回null
                 return null;
             }
@@ -90,7 +89,7 @@ public class RedisClient {
         T data = dbCallback.get();
         if (data == null) {
             //未查到数据则缓存空对象
-            stringRedisTemplate.opsForValue().set(key, "", RedisConstants.CACHE_NULL_TTL, TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(key, "", redisClientProperties.getCacheNullTtl(), TimeUnit.MINUTES);
             //返回空
             return null;
         }
@@ -165,7 +164,7 @@ public class RedisClient {
      * @return 是否获取成功
      */
     private boolean tryLock(String key) {
-        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(RedisConstants.LOCK_KEY + key, "lock", RedisConstants.LOCK_TTL, TimeUnit.SECONDS);
+        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(redisClientProperties.getLockKey() + key, "lock", redisClientProperties.getLockTtl(), TimeUnit.SECONDS);
         return BooleanUtil.isTrue(flag);
     }
 
