@@ -25,7 +25,6 @@ public class RedisClientAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(RedisClient.class)
     public RedisClient redisClient(StringRedisTemplate stringRedisTemplate, RedisClientProperties redisClientProperties) {
-        System.out.println(redisClientProperties.getCacheNullTtl());
         return new RedisClient(stringRedisTemplate, redisClientProperties);
     }
 }
